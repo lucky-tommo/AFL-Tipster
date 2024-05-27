@@ -10,3 +10,17 @@ Future enhancements:
 
 
 YMMV - Have fun!
+
+
+How to use
+-----------
+Run the script.
+
+To see the current rating - select 1. 
+To predict a single match - select 2
+To Predict a whole round - select 3
+To Input match results and update the Matches file - select 4. 
+
+When entering teams - team names need to look like: North Melbourne Kangaroos. - note the capitalisation. 
+When entering the margin - if the home team won, margin is like 23. If the away team won, the margin is like -23.
+After inputting matches, exit the script and rerun it to update the elo ratings. (the file saves on exit **change this**) 
