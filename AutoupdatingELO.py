@@ -49,26 +49,6 @@ initial_elo_ratings = {
     'Fitzroy': 1000
 }
 
-def submittomatchcount():
-    global teamgames
-    
-
-    for team in teamnames:
-        teamgames = 0
-        
-        for match in matches:
-            (team1, team2, margin) = match
-        
-            if team1 == team:
-                teamgames = teamgames+1
-            elif team2 == team:
-                teamgames = teamgames+1
-            
-        
-        print (f"{team} : {teamgames}")
-
-
-
 # Define K-factor
 #would like to implement a sliding K_FACTOR - something like:
 # 
@@ -168,15 +148,6 @@ def setratings():
             initial_elo_ratings, team1, team2, margin
         )
 
-# Display updated Elo ratings sorted from highest to lowest
-def ratings():
-    sorted_ratings = sorted(initial_elo_ratings.items(), key=lambda x: x[1], reverse=True)
-    print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n")
-    print("Updated Elo Ratings:\n")
-    for team, rating in sorted_ratings:
-        print(f"{team}: {rating}")
-    print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n")    
-
 def predictor(ratings, team1, team2, margin):
     expected_team1 = expected_score(ratings[team1], ratings[team2])
     expected_team2 = 1 - expected_team1
@@ -196,141 +167,7 @@ def predictor(ratings, team1, team2, margin):
     print("Predicted Winning Margin:", abs(predicted_margin), "points")
     print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n")
 
- #Define function to predict match outcome
-def predict_match():
-    input1 = False
-    while input1 is False:
-        team1 = input("Enter the name of the first team: ")
-        if team1 in teamnames:
-            input1 is True
-            break
-        else:
-            print("Invalid team name - do it like this: Geelong Cats")
-            continue
 
-    input2 = False
-    while input2 is False:
-        team2 = input("Enter the name of the second team: ")
-        if team2 in teamnames:
-            input2 is True
-            break
-        else:
-            print("Invalid team name - do it like this: Geelong Cats")
-            continue
-    
-    
-    # Update Elo ratings based on user input
-    margin = 0  # We don't need the user to enter the margin
-    predictor(initial_elo_ratings, team1, team2, margin)
-
-def count():
-    number = int(input("How many matches do you want to input?:"))
-    for _ in range(number):
-        matchinput()
-    
-
-
-def matchinput():
-    input1 = False
-    while input1 is False:
-        hometeamraw = input("Enter the Home team:")
-        if hometeamraw in teamnames:
-            input1 is True
-            break
-        else:
-            print("Invalid team name - do it like this: Geelong Cats")
-            continue
-
-    global hometeam
-    hometeam = f"('{hometeamraw}',"
-    input2 = False
-    while input2 is False:
-        awayteamraw = input("Enter the Away team:")
-        if awayteamraw in teamnames:
-            input2 is True
-            break
-        else:
-            print("Invalid team name - do it like this: Geelong Cats")
-            continue
-
-    global awayteam
-    awayteam = f"'{awayteamraw}',"
-    
-    input3 = False
-    while input3 is False:
-        marginraw = input("Enter the margin:")
-        try:
-            int(marginraw)
-            break
-        except ValueError:
-            try:
-                float(marginraw)
-                break
-            except ValueError:
-                print("Margins are numbers man!")
-                continue
-    marginint = int(marginraw)
-        
-
-    global margin
-    margin = f"{marginraw}),"
-    matches.append((hometeamraw ,awayteamraw ,marginint))
-
-
-#def savefile():
-#    f = open('Matches', 'w')
-#    for t in matches:
-#        f.write(repr(t)+",")
-#    f.close()
-#savefile()
-
-def menu():
-
-    print("\n\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\nWelcome to LuckyTom's AFL ratings and Predictor Tool! - YMMV\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n")
-    print("1. Print ELO Rating")
-    print("2. Predict a single match")
-    print("3. Predict a whole round")
-    print("4. Input match results")
-    print("5. Exit\n")
-
-    choice = input("Enter your choice (1-5):")
-
-    if choice == '2':
-        print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n")
-        print("You have chosen to predict one match. Enter Teams below:\n")
-        print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n")
-        predict_match()
-        menu()
-    elif choice == '3':
-        print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n")
-        print("You have chosen to predict a full round.\n")
-        for _ in range(9):
-            predict_match()
-        menu()
-    elif choice == '1':
-        print("\n\n")
-        ratings()
-        menu()
-    elif choice == '4':
-        print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n")
-        print("You have chosen to input matches. Remember to exit and reload script to update ratings")
-        print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n")
-        count()
-        savefile()
-        openfile()
-        menu()
-    
-    elif choice == '5':
-        print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n")
-        print("Seeya Legend - Happy Bets :)")
-        print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n")
-        exit
-    else:
-        print("Please choose a valid option")
-        menu()
-
-
- 
 def HistoricalData():
     global season
     global seasonconstant
@@ -360,10 +197,17 @@ def HistoricalData():
             manyseasons is True
             break
     #Need to pull 2025 data here but ignore non completed. 
+
+def ratings():
+    sorted_ratings = sorted(initial_elo_ratings.items(), key=lambda x: x[1], reverse=True)
+    print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n")
+    print("Updated Elo Ratings:\n")
+    for team, rating in sorted_ratings:
+        print(f"{team}: {rating}")
+    print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n") 
+
 def main():
     HistoricalData() 
-    print(matches)
     setratings()
-    submittomatchcount()
-    menu()
+    ratings()
 main()
